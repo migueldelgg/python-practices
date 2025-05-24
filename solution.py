@@ -33,22 +33,16 @@ def http_service():
             conversion_rates = data['conversion_rates']
 
             moedas = {
-                'BRL': round(conversion_rates.get('BRL', 0), 2),
+                'BRL': round(conversion_rates.get('BRLS', 0), 2),
                 'EUR': round(conversion_rates.get('EUR', 0), 2),
                 'JPY': round(conversion_rates.get('JPY', 0), 2),
             }
 
-            if not moedas.get('BRL'):
-                log_writer('BRL value not found.')
-            log_writer(f'BRL current value = {moedas.get('BRL')}')
-
-            if not moedas.get('EUR'):
-                log_writer('EUR value not found.')
-            log_writer(f'EUR current value = {moedas.get('EUR')}')
-
-            if not moedas.get('JPY'):
-                log_writer('JPY value not found.')
-            log_writer(f'JPY current value = {moedas.get('JPY')}')
+            for sigla in ['BRL', 'EUR', 'JPY']:
+                valor = moedas.get(sigla)
+                if not valor: # Quando valor == 0.0, a condição if not valor: é verdadeira, e a linha do log é executada
+                    log_writer(f'{sigla} value not found.')
+                log_writer(f'{sigla} current value = {valor}')
 
         except KeyError as e:
             with open('log_cotacoes.txt', 'a', encoding='utf-8') as file:
