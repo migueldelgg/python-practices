@@ -75,25 +75,25 @@ def format_attributes(products):
             log_writer(log_file_name, f'Success download image of product: {product_id}')
 
         attributes.append({
-            'id': product_id,
-            'title': title,
-            'og_price': product['price'],
-            'discount_price': discount_price,
-            'category': product['category'],
-            'short_description': short_description,
-            'img_local_name': image_local_name
+            'ID_Produto': product_id,
+            'Titulo': title,
+            'Preco_Original': product['price'],
+            'Preco_Com_Desconto': discount_price,
+            'Categoria': product['category'],
+            'Descricao_Curta': short_description,
+            'Nome_Arquivo_Imagem_Local': image_local_name
         })
 
         print(short_description)
         print(discount_price)
         log_writer(log_file_name, f'    Product {n}: {title} has been processed')
 
+    products_csv(attributes)
+
 def products_csv(products_dictionary):
     try:
         products = pd.DataFrame(products_dictionary)
         file_name = f'{log_date_for_files()} catalogo_produtos.csv'
-        products.column('ID_Produto', 'Titulo', 'Preco_Original', 'Preco_Com_Desconto', 'Categoria',
-                        'Nome_Arquivo_Imagem_Local')
         products.to_csv(file_name, index=False)
     except Exception as e:
         with open(file_name, 'a', encoding='utf-8') as file:
