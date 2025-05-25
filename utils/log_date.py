@@ -13,6 +13,10 @@ print(log_date())
 def log_date_for_files():
     return datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 
-def log_writer(message):
-    with open('log_cotacoes.txt', 'a', encoding='utf-8') as file:
+def log_writer(file_name, message):
+
+    if not file_name:
+        file_name = 'log_cotacoes.txt'
+
+    with open(f'{file_name}', 'a', encoding='utf-8') as file:
         file.write(f'{log_date()} Message: {message}\n')

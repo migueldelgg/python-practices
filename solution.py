@@ -9,7 +9,7 @@ def execute():
 
     http_service()
 
-    log_writer('Finalizado Script de Cotacoes')
+    log_writer('log_cotacoes.txt','Finalizado Script de Cotacoes')
 
 def http_service():
     api_key = None
@@ -26,7 +26,7 @@ def http_service():
         if response.status_code != 200:
             raise ValueError(f'Request failed with {response.status_code} Http Status Code.')
 
-        log_writer('Request successes with 200 Http Status Code')
+        log_writer('log_cotacoes.txt','Request successes with 200 Http Status Code')
         data = response.json()
 
         try:
@@ -41,8 +41,8 @@ def http_service():
             for sigla in ['BRL', 'EUR', 'JPY']:
                 valor = moedas.get(sigla)
                 if not valor: # Quando valor == 0.0, a condição if not valor: é verdadeira, e a linha do log é executada
-                    log_writer(f'{sigla} value not found.')
-                log_writer(f'{sigla} current value = {valor}')
+                    log_writer('log_cotacoes.txt',f'{sigla} value not found.')
+                log_writer('log_cotacoes.txt',f'{sigla} current value = {valor}')
 
         except KeyError as e:
             with open('log_cotacoes.txt', 'a', encoding='utf-8') as file:
@@ -65,7 +65,7 @@ def http_service():
         try:
             df = pd.DataFrame(result)
             df.to_csv(file_name, index=False)
-            log_writer(f'CSV {file_name} Gerado com sucesso')
+            log_writer('log_cotacoes.txt',f'CSV {file_name} Gerado com sucesso')
         except Exception as e:
             with open('log_cotacoes.txt', 'a', encoding='utf-8') as file:
                 file.write(f'{log_date()} Erro na geracao do csv: {e}\n')
